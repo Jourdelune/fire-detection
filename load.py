@@ -5,9 +5,9 @@ import torch
 class Data:
     def __init__(self, csv_file='data/images.csv', base_img_path='data/', batch_size=4, transform=None):
         data = CustomDataset(csv_file=csv_file, transform=transform, base_img_path=base_img_path)
-
-        train_size = int(0.8 * len(data))
-        test_size = len(data) - train_size
+        
+        test_size = min(int(0.2 * len(data)), 2000)
+        train_size = len(data) - test_size
 
         train_dataset, test_dataset = torch.utils.data.random_split(
             data, [train_size, test_size])
