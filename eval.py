@@ -2,11 +2,22 @@ import torch
 
 
 class Eval:
-    def __init__(self, testloader, device) -> None:
+    """Class to evaluate the model on the testloader"""
+    
+    def __init__(self, testloader: torch.utils.data.dataloader.DataLoader, device: torch.device) -> None:
+        """Method to initialize the class
+
+        :param testloader: the testloader
+        :type testloader: torch.utils.data.dataloader.DataLoader
+        :param device: the device to use
+        :type device: torch.device
+        """
+
         self._testloader = testloader
         self.device = device
 
     def eval(self, model) -> int:
+        print(type(model))
         correct = 0
         total = 0
         with torch.no_grad():

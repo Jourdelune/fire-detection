@@ -1,14 +1,15 @@
 import torchvision.transforms as transforms
 
-BATCH_SIZE = 1
-EPOCH = 1000
-PRINT_OCC = 200
-PATIENCE = 4
+BATCH_SIZE = 1  # Number of image to process at once
+EPOCH = 1000  # Number of epoch to train the model
+PRINT_OCC = 200  # Number of batch before printing the loss
+PATIENCE = 4  # Number of epoch to wait before stopping the training if early stopping is enabled
 CSV_PATH = 'data/images.csv'
 BASE_IMG_PATH = 'data/'
-PRETRAINED = True
-EARLY_STOPPING = True
+PRETRAINED = True  # Set to False to train from scratch
+EARLY_STOPPING = True  # Set to False to disable early stopping
 
+# Define the transformation to apply to the image
 transform = transforms.Compose([
     transforms.Resize((1200, 720)),
     transforms.CenterCrop(224*3),

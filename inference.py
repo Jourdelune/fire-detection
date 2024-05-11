@@ -4,7 +4,7 @@ from model.net import Net
 import config
 
 PATH = 'weights/fire_detect.pth'
-FILENAME = "PATH"
+FILENAME = "/home/jourdelune/Bureau/dev/fire-detection/demo/0OHIZDnqPPJIBU4jRQkO_resized.jpeg"
 
 model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=False)
 model.fc = Net(model.fc.in_features)
