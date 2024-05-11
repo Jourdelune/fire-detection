@@ -4,7 +4,7 @@ from model.net import Net
 import config
 
 PATH = 'weights/fire_detect.pth'
-FILENAME = "/home/jourdelune/Bureau/dev/fire-detection/demo/0OHIZDnqPPJIBU4jRQkO_resized.jpeg"
+FILENAME = "/home/jourdelune/Bureau/dev/fire-detection/data/firelookout/img/test/not fire/1.jpg"
 
 model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=False)
 model.fc = Net(model.fc.in_features)
@@ -25,6 +25,5 @@ with torch.no_grad():
     output = model(input_batch)
 
 # The output has unnormalized scores. To get probabilities, you can run a softmax on it.
-probabilities = torch.nn.functional.softmax(output[0], dim=0)
-print(probabilities)
-print(f"Prob feux : {torch.round(probabilities[0])}, Prob pas feux : {torch.round(probabilities[1])}")
+probabilities = torch.nn.functional.sigmoid(output)
+print(f"Prob feux : {(probabilities >= 0.5)[0][0]} | {torch.round(probabilities[0][0], decimals=3)}")

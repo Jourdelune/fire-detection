@@ -13,7 +13,7 @@ class Net(nn.Module):
         """
 
         super(Net, self).__init__()
-        self.fc = nn.Linear(input_features, 2)
+        self.fc = nn.Linear(input_features, 1)
 
     def forward(self, x: torch.tensor) -> torch.Tensor:
         """Method to forward propagate the input through the network

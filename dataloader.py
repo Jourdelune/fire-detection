@@ -40,9 +40,9 @@ class CustomDataset(Dataset):
         :rtype: tuple
         """
         
-        label = torch.tensor([0, 1], dtype=torch.float)
+        label = torch.tensor(0, dtype=torch.float)
         if isinstance(self.data.iloc[idx, 0], str):
-            label = torch.tensor([1, 0], dtype=torch.float)
+            label = torch.tensor(1, dtype=torch.float)
 
         if isinstance(self.data.iloc[idx, 0], str):
             img_path = self.data.iloc[idx, 0]
@@ -55,4 +55,4 @@ class CustomDataset(Dataset):
         if self.transform:
             image = self.transform(image)
 
-        return image, label
+        return image, label.unsqueeze(0).float()

@@ -30,7 +30,7 @@ class Data:
         self._trainloader = torch.utils.data.DataLoader(
             train_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
         self._testloader = torch.utils.data.DataLoader(
-            test_dataset, batch_size=batch_size, shuffle=False, num_workers=2)
+            test_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
 
     def get_loader(self) -> tuple:
         """Method to return the trainloader and the testloader

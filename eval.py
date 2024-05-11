@@ -17,7 +17,6 @@ class Eval:
         self.device = device
 
     def eval(self, model) -> int:
-        print(type(model))
         correct = 0
         total = 0
         with torch.no_grad():
@@ -26,12 +25,12 @@ class Eval:
                 images = images.to(self.device)
                 labels = labels.to(self.device)
                 outputs = model(images)
-                _, predicted = torch.max(outputs.data, 1)
-
+                
+                predicted = torch.nn.functional.sigmoid(outputs)
                 total += labels.size(0)
 
                 for i in range(len(labels)):
-                    if torch.max(labels[i], 0)[1] == predicted[i]:
+                    if labels[i].bool() == (predicted[i] >= 0.5):
                         correct += 1
 
         return 100 * correct / total

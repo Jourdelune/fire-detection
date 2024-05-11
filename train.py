@@ -24,8 +24,10 @@ model.to(device)
 model.fc = Net(model.fc.in_features)
 model.to(device)
 
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+criterion = nn.BCEWithLogitsLoss()
+optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9)
+
 eval = Eval(testloader, device)
 
 for epoch in range(EPOCH):  # loop over the dataset multiple times
@@ -41,6 +43,7 @@ for epoch in range(EPOCH):  # loop over the dataset multiple times
 
         # forward + backward + optimize
         outputs = model(inputs)
+  
         loss = criterion(outputs, labels)
         loss.backward()
         optimizer.step()
@@ -51,24 +54,27 @@ for epoch in range(EPOCH):  # loop over the dataset multiple times
             print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / PRINT_OCC:.3f}')
             running_loss = 0.0
 
+    scheduler.step()
+    
     if not EARLY_STOPPING:
         continue
 
-    # calculate validation_loss
-    validation_loss = 0.0
+    with torch.no_grad():
+        # calculate validation_loss
+        validation_loss = 0.0
+    
+        for i, data in enumerate(testloader, 0):
+            inputs, labels = data
+            inputs = inputs.to(device)
+            labels = labels.to(device)
 
-    for i, data in enumerate(testloader, 0):
-        inputs, labels = data
-        inputs = inputs.to(device)
-        labels = labels.to(device)
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            validation_loss += loss.item()
 
-        outputs = model(inputs)
-        loss = criterion(outputs, labels)
-        validation_loss += loss.item()
-
-    if early_stopping.early_stop(validation_loss):
-        print(f'Early stopping on epoch {epoch + 1}')
-        break
+        if early_stopping.early_stop(validation_loss):
+            print(f'Early stopping on epoch {epoch + 1}')
+            break
 
 print('Finished Training')
 
@@ -76,4 +82,4 @@ PATH = './weights/fire_detect.pth'
 torch.save(model.state_dict(), PATH)
 
 print(
-    f'Accuracy of the network on the 10000 test images: {eval.eval(model):.2f}%')
+    f'Accuracy of the network on the test images: {eval.eval(model):.2f}%')
