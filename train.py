@@ -72,8 +72,7 @@ for epoch in range(EPOCH):  # loop over the dataset multiple times
 
 print('Finished Training')
 
-PATH = './weights/fire_detect.pth'
-torch.save(model.state_dict(), PATH)
+torch.save(model.state_dict(), './weights/fire_detect.pth')
 
 print(
-    f'Accuracy of the network on the 10000 test images: {eval.eval(model):.2f}%')
+    f'Accuracy of the network on the test images: {eval.eval(model):.2f}%')

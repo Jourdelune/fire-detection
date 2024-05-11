@@ -17,7 +17,6 @@ class Eval:
         self.device = device
 
     def eval(self, model) -> int:
-        print(type(model))
         correct = 0
         total = 0
         with torch.no_grad():
