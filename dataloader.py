@@ -5,9 +5,10 @@ from torch.utils.data import Dataset
 
 
 class CustomDataset(Dataset):
-    def __init__(self, csv_file, transform=None):
+    def __init__(self, csv_file, base_img_path='', transform=None):
         self.data = pd.read_csv(csv_file)
         self.transform = transform
+        self._base_img_path = base_img_path
 
     def __len__(self):
         return len(self.data)
@@ -22,7 +23,7 @@ class CustomDataset(Dataset):
         else:
             img_path = self.data.iloc[idx, 1]
 
-        img_path = 'data/' + img_path
+        img_path = self._base_img_path + img_path
         image = Image.open(img_path)
 
         if self.transform:

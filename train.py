@@ -12,12 +12,13 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Using {device} device')
 
 data = Data(csv_file=CSV_PATH,
-            batch_size=BATCH_SIZE, transform=transform)
+            batch_size=BATCH_SIZE, transform=transform, base_img_path=BASE_IMG_PATH)
 trainloader, testloader = data.get_loader()
 
 early_stopping = EarlyStopper(patience=4)
 
-model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', weights=PRETRAINED)
+model = torch.hub.load('pytorch/vision:v0.10.0',
+                       'resnet18', weights=PRETRAINED)
 model.to(device)
 
 model.fc = Net(model.fc.in_features)
@@ -52,10 +53,10 @@ for epoch in range(EPOCH):  # loop over the dataset multiple times
 
     if not EARLY_STOPPING:
         continue
-    
+
     # calculate validation_loss
     validation_loss = 0.0
-    
+
     for i, data in enumerate(testloader, 0):
         inputs, labels = data
         inputs = inputs.to(device)
@@ -64,14 +65,15 @@ for epoch in range(EPOCH):  # loop over the dataset multiple times
         outputs = model(inputs)
         loss = criterion(outputs, labels)
         validation_loss += loss.item()
-    
+
     if early_stopping.early_stop(validation_loss):
         print(f'Early stopping on epoch {epoch + 1}')
         break
-    
+
 print('Finished Training')
 
 PATH = './weights/fire_detect.pth'
 torch.save(model.state_dict(), PATH)
 
-print(f'Accuracy of the network on the 10000 test images: {eval.eval(model):.2f}%')
+print(
+    f'Accuracy of the network on the 10000 test images: {eval.eval(model):.2f}%')

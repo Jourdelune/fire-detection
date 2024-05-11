@@ -2,13 +2,10 @@ from dataloader import CustomDataset
 import torch
 
 
-data = CustomDataset(csv_file='data/images.csv')
-
-
 class Data:
-    def __init__(self, csv_file='data/images.csv', batch_size=4, transform=None):
-        data = CustomDataset(csv_file=csv_file, transform=transform)
- 
+    def __init__(self, csv_file='data/images.csv', base_img_path='data/', batch_size=4, transform=None):
+        data = CustomDataset(csv_file=csv_file, transform=transform, base_img_path=base_img_path)
+
         train_size = int(0.8 * len(data))
         test_size = len(data) - train_size
 

@@ -1,12 +1,10 @@
 import torch
 from PIL import Image
-from torchvision import transforms
 from model.net import Net
 import config
 
 PATH = 'weights/fire_detect.pth'
 FILENAME = "PATH"
-
 
 model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=False)
 model.fc = Net(model.fc.in_features)
