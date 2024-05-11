@@ -26,7 +26,6 @@ model.to(device)
 
 criterion = nn.BCEWithLogitsLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
-scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9)
 
 eval = Eval(testloader, device)
 
@@ -53,8 +52,6 @@ for epoch in range(EPOCH):  # loop over the dataset multiple times
         if i % PRINT_OCC == PRINT_OCC - 1:
             print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / PRINT_OCC:.3f}')
             running_loss = 0.0
-
-    scheduler.step()
     
     if not EARLY_STOPPING:
         continue
