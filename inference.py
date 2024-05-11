@@ -5,7 +5,7 @@ from model.net import Net
 import config
 
 PATH = 'weights/fire_detect.pth'
-FILENAME = "/home/jourdelune/Bureau/dev/FireDetection/data/firelookout/img/test/fire/4.jpeg"
+FILENAME = "PATH"
 
 
 model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=False)
